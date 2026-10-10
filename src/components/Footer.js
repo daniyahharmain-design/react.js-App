@@ -10,7 +10,7 @@ const Footer = () => {
         color: "white",
       }}
     >
-      <img src={logoURL} />
+      <img src="https://ik.imagekit.io/q06kuqs4s/food.png" />
       <h4>© 2026 harmain . All rights reserved.</h4>
     </div>
   );
