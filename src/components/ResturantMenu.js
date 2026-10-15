@@ -1,38 +1,20 @@
-import React from "react";
-import { useState, useEffect } from "react";
 import { useParams } from "react-router";
-import { menuApi } from "../utils/constants";
-import RestaurantCategory from "./RestaurantCategory";
 import RestaurantMenuInfoCard from "./RestaurantMenuInfoCard";
+import RestaurantCategory from "./RestaurantCategory";
+import useRestaurantMenu from "../utils/useRestaurantMenu";
+import { useState } from "react";
 
 const RestaurantMenu = () => {
-
-  const [menu, setMenu] = useState(null)
-
   const { restaurantId } = useParams();
 
+  const menu = useRestaurantMenu(restaurantId);
 
-  async function fetchMenu(){
-    const response =  await  fetch(menuApi+restaurantId)
+  // const [showItems, setShowItems] = useState(false);
+  const [showIndex, setShowIndex] = useState(-1);
 
-    const data = await response.json();
-    console.log(data)
-
-    setMenu(data)
+  if (menu == null) {
+    return <div>loading...</div>;
   }
-
-  useEffect(()=>{
-    fetchMenu()
-  }, [])
-
-  if(menu == null) {
-    return <div>
-      loading...
-    </div>
-  }
-  
-
-    console.log(menu.data.cards[4].groupedCard.cardGroupMap.REGULAR.cards);
 
   const categoriesArr =
     menu.data.cards[4].groupedCard.cardGroupMap.REGULAR.cards.filter((elem) => {
@@ -56,11 +38,15 @@ const RestaurantMenu = () => {
         paddingRight: "340px",
       }}
     >
-      <RestaurantMenuInfoCard menu={menu}/>
+      <RestaurantMenuInfoCard menu={menu} />
 
-      {categoriesArr.map((category) => {
+      {categoriesArr.map((category, index) => {
         return (
           <RestaurantCategory
+            command={index == showIndex ? true : false}
+            setIndex={()=>{
+              setShowIndex(index)
+            }}
             category={category.card.card}
             key={category.card.card.categoryId}
           />
@@ -71,3 +57,5 @@ const RestaurantMenu = () => {
 };
 
 export default RestaurantMenu;
+
+
