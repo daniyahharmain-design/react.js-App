@@ -1,9 +1,15 @@
 import { Link } from "react-router";
 import { logoURL } from "../utils/constants";
-import logoImg from '../../src/food2.png'
+import useRestaurantMenu from "../utils/useRestaurantArr";
+import useOnlineStatus from "../utils/useOnlineStatus";
+import { useContext } from "react";
+import HotelListContext from "../utils/HotelListContext";
+import UserContext from "../utils/UserContext";
 
+const Header= () => {
+    const { hotelList, setHotelList } = useContext(HotelListContext);
+    const userObj = useContext(UserContext);
 
-const Header = () => {
   return (
     <div className="header">
       <div className="logo-container">
@@ -13,12 +19,29 @@ const Header = () => {
          />
       </div>
 
-      <div className="search-bar">
-        <input placeholder="Search Restaurants..." />
+    <div className="header">
+      </div>
+
+          <div className="search-bar">
+        <input placeholder="Search Restaurants..." onChange={(e)=>{
+
+           const filteredArr =  allItems.filter((restaurantObj)=>{
+              if(restaurantObj.info.name.toLowerCase().includes(e.target.value.toLowerCase())){
+                return true
+              } else {
+                return false
+              }
+            })
+
+            setHotelList(filteredArr)
+
+        }} />
       </div>
 
       <div className="nav-items">
         <ul>
+
+          <li>{useOnlineStatus ? <b>Online 🟢</b> : <b>Offline 🛑 </b>}</li>
           <li>
             <Link to="/">Home</Link>
           </li>
@@ -34,7 +57,14 @@ const Header = () => {
           <li>
             <Link to="/cart">Cart</Link>
           </li>
+            <li>
+            <Link to="/grocery">Grocery</Link>
+          </li>
 
+          <li>{userObj.name}</li>
+
+
+{}
           
         </ul>
       </div>

@@ -40,7 +40,7 @@ const RestaurantMenu = () => {
     >
       <RestaurantMenuInfoCard menu={menu} />
 
-      {categoriesArr.map((category, index) => {
+      {/* {categoriesArr.map((category, index) => {
         return (
           <RestaurantCategory
             command={index == showIndex ? true : false}
@@ -51,9 +51,25 @@ const RestaurantMenu = () => {
             key={category.card.card.categoryId}
           />
         );
-      })}
+      })} */}
+
+      {categoriesArr.map((category, index) => {
+  return (
+    <RestaurantCategory
+      command={index === showIndex}
+      setIndex={() => {
+        setShowIndex((prevIndex) =>
+          prevIndex === index ? -1 : index
+        );
+      }}
+      category={category.card.card}
+      key={category.card.card.categoryId}
+    />
+  );
+})}
     </div>
   );
+  
 };
 
 export default RestaurantMenu;

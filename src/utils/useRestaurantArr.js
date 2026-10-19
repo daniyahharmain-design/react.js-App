@@ -1,16 +1,20 @@
 import {useState, useEffect} from "react"
 import { swiggyRestaurantsURL } from "./constants";
+import HotelListContext from "./HotelListContext";
+
+
 
 
 const useRestaurantArr = () => {
-  const [restaurantsArr, setRestaurantArr] = useState(null);
+  const {hotelList, setHotelList, setAllItems} = useContext(HotelListContext)
+
 
   async function fetchRestaurantArr() {
     const response = await fetch(swiggyRestaurantsURL);
 
     const data = await response.json();
 
-    setRestaurantArr(
+    setHotelList(
       data?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle
         ?.restaurants,
     );
@@ -25,7 +29,7 @@ const useRestaurantArr = () => {
     fetchRestaurantArr();
   }, []);
 
-  return restaurantsArr;
+   return hotelList;
 };
 
 export default useRestaurantArr;
